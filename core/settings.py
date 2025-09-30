@@ -222,8 +222,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # CORS configuration
 CORS_ALLOWED_ORIGINS = [
+    "https://parcial1god.netlify.app",
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3000"
+      
 ]
 
 # Permite todos los orígenes en desarrollo
@@ -235,6 +237,7 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://parcial1god.netlify.app"
 ]
 # Asegurar que el directorio de logs exista
 LOG_DIR = BASE_DIR / 'logs'
