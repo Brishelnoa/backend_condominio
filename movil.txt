@@ -1,0 +1,75 @@
+Guía para consumir la lista de propietarios e inquilinos desde móvil
+===============================================================
+
+1. Endpoint
+-----------
+- URL: /api/seguridad/lista-propietarios-inquilinos/
+- Método: GET
+- Autenticación: JWT (Bearer Token en el header Authorization)
+
+2. Headers requeridos
+---------------------
+Authorization: Bearer <JWT_TOKEN>
+Content-Type: application/json
+
+3. Ejemplo de petición en Flutter (Dart)
+----------------------------------------
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future<void> fetchPropietariosInquilinos(String jwtToken) async {
+  final url = Uri.parse('https://TU_BACKEND/api/seguridad/lista-propietarios-inquilinos/');
+  final response = await http.get(
+    url,
+    headers: {
+      'Authorization': 'Bearer $jwtToken',
+      'Content-Type': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    final lista = jsonData['data'] as List;
+    print(lista); // Aquí puedes mapear el JSON a tu modelo de usuario
+  } else {
+    print('Error: ${response.statusCode}');
+  }
+}
+
+4. Estructura de la respuesta
+-----------------------------
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "nombres_completos": "Juan Pérez",
+      "documento_identidad": "12345678",
+      "unidad_residencial": "A-101",
+      "tipo_residente": "Propietario",
+      "email": "juan@ejemplo.com",
+      "telefono": "123456789",
+      "activo": true,
+      "reconocimiento_facial": {
+        "fecha_enrolamiento": "2025-09-29T10:00:00",
+        "confianza": 0.98,
+        "fotos_urls": ["https://..."]
+      },
+      "fecha_creacion": "2025-09-29T10:00:00"
+    }
+    // ...más usuarios
+  ],
+  "total": 10
+}
+
+5. Visualización recomendada
+----------------------------
+- Mostrar nombre, documento, unidad, tipo de residente, email y teléfono.
+- Puedes mostrar fotos y detalles adicionales si lo necesitas.
+- Si el campo "reconocimiento_facial" es null, significa que el usuario no tiene enrolamiento facial.
+
+6. Consideraciones
+------------------
+- El endpoint requiere que el usuario tenga permisos de seguridad.
+- Si el token es inválido o el usuario no tiene permisos, recibirás un error 403.
+- Si necesitas más campos, puedes pedirlos al backend.
